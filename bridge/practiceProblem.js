@@ -1,31 +1,51 @@
-// Muitas combinações duplicadas
-class AudioWindows {
-  play() {
-    console.log("Reproduzindo áudio no Windows");
+// Implementação — plataforma
+class PlayerImplementation {
+  playMedia(type) {
+    throw new Error("Método abstrato deve ser implementado");
   }
 }
 
-class AudioLinux {
-  play() {
-    console.log("Reproduzindo áudio no Linux");
+class WindowsPlayer extends PlayerImplementation {
+  playMedia(type) {
+    console.log(`Reproduzindo ${type} no Windows`);
   }
 }
 
-class VideoWindows {
-  play() {
-    console.log("Reproduzindo vídeo no Windows");
+class LinuxPlayer extends PlayerImplementation {
+  playMedia(type) {
+    console.log(`Reproduzindo ${type} no Linux`);
   }
 }
 
-class VideoLinux {
+// Abstração — tipo de mídia
+class Media {
+  constructor(player) {
+    this.player = player;
+  }
+
   play() {
-    console.log("Reproduzindo vídeo no Linux");
+    throw new Error("Método abstrato deve ser implementado");
+  }
+}
+
+class Audio extends Media {
+  play() {
+    this.player.playMedia("áudio");
+  }
+}
+
+class Video extends Media {
+  play() {
+    this.player.playMedia("vídeo");
   }
 }
 
 // Cliente
-const a1 = new AudioWindows();
-a1.play();
+const windowsPlayer = new WindowsPlayer();
+const linuxPlayer = new LinuxPlayer();
 
-const v1 = new VideoLinux();
-v1.play();
+const audioWindows = new Audio(windowsPlayer);
+audioWindows.play(); // Reproduzindo áudio no Windows
+
+const videoLinux = new Video(linuxPlayer);
+videoLinux.play();   // Reproduzindo vídeo no Linux
